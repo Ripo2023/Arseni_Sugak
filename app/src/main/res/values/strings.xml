@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="one_text">Coffee to Go is an application in which you can order coffee online and pick it up at the coffee shop closest to you.
+Now let's tell you how it works</string>
+    <string name="two_text">The map shows the nearest coffee shops to you, choose the most convenient one for you. The app will tell you how long to go to it.</string>
+    <string name="three_text">Choose your favorite drinks and desserts. You can change their composition and choose the time when it will be convenient for you to pick them up.</string>
+    <string name="four_text">At the specified time, come to the coffee shop and enjoy the taste of coffee, without queuing and waiting.</string>
+    <string name="hello">Hello!</string>
+    <string name="search">Search for a coffee shop</string>
+    <string name="making">Making an order</string>
+    <string name="receiving">Receiving an order</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="Continue">Continue</string>
+    <string name="sign">Sign in</string>
+    <string name="select">Select</string>
+</resources>

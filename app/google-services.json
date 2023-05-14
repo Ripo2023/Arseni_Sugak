@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "690493100761",
+    "firebase_url": "https://coffee-go-cd82e-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "coffee-go-cd82e",
+    "storage_bucket": "coffee-go-cd82e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:690493100761:android:5ef805e8ff9c4f6c0264c8",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "690493100761-u0gk1k1tmho7vrr9bph47icbt89p7lnp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDhQUwFLbgUZZwLCXGtf2V0fTPiyXQfog"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "690493100761-u0gk1k1tmho7vrr9bph47icbt89p7lnp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
