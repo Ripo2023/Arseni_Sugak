@@ -1,8 +1,11 @@
 package com.example.myapplication.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import com.example.myapplication.R
 import com.example.myapplication.adapters.GridListAdapter
 import com.example.myapplication.adapters.ProductListAdapter
@@ -72,6 +75,12 @@ class ProductListActivity : AppCompatActivity() {
                 list.add(dataProduct)
             }
         }
+        if(list.isEmpty()){
+            binding.recyclerView.visibility = View.GONE
+            binding.button.visibility = View.GONE
+            binding.empty.visibility = View.VISIBLE
+        }
+
         binding.recyclerView.adapter = ProductListAdapter(list)
     }
 

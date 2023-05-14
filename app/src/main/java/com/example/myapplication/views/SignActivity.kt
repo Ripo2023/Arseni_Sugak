@@ -1,5 +1,6 @@
 package com.example.myapplication.views
 
+import android.content.Intent
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -70,6 +71,9 @@ class SignActivity : AppCompatActivity() {
             ) {
                 VerifyActivity.storedVerificationId = verificationId
                 VerifyActivity.resendToken = token
+
+                startActivity(Intent(this@SignActivity, VerifyActivity::class.java))
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }
         }
 

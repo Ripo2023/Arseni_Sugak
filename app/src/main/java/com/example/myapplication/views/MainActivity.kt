@@ -1,8 +1,10 @@
 package com.example.myapplication.views
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.myapplication.R
 import com.example.myapplication.adapters.GridListAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
@@ -53,10 +55,21 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+        binding.user.setOnClickListener {
+            startActivity(Intent(this, ProductListActivity::class.java))
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        }
     }
 
     private fun showToastMessage() {
         Toast.makeText(this@MainActivity, R.string.error_text, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackPressed() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Important!")
+        alertDialog.setMessage("You have added items to your cart. Are you sure you want to leave?")
     }
 
     private fun getCoffeData(
