@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.SignActivity">
+    tools:context=".views.VerifyActivity">
 
     <ImageView
         android:id="@+id/back"
@@ -13,7 +13,6 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
         android:src="@drawable/left"
-        android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/semi"
-        android:text="@string/sign"
+        android:text="@string/verify"
         android:textColor="@color/black"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@+id/back"
@@ -69,6 +68,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/regu"
         android:textSize="13sp"
+        android:visibility="invisible"
         android:text="@string/i_m_agree_with_privacy_policy_and_user_agreement"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintStart_toStartOf="@+id/button" />
@@ -78,8 +78,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:fontFamily="@font/regu"
-        android:text="@string/sign"
+        android:fontFamily="@font/bold"
+        android:text="@string/code"
         android:textColor="@color/black"
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@+id/phone"

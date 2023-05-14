@@ -1,8 +1,9 @@
-package com.example.myapplication
+package com.example.myapplication.views
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.myapplication.R
 import com.example.myapplication.adapters.GridListAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.models.CoffeeModel

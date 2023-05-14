@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Coffe Go</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="one_text">Coffee to Go is an application in which you can order coffee online and pick it up at the coffee shop closest to you.
@@ -13,6 +13,7 @@ Now let's tell you how it works</string>
     <string name="receiving">Receiving an order</string>
     <string name="skip">Skip</string>
     <string name="next">Next</string>
+    <string name="finish">Finish</string>
     <string name="Continue">Continue</string>
     <string name="sign">Sign in</string>
     <string name="select">Select</string>
@@ -20,4 +21,6 @@ Now let's tell you how it works</string>
     <string name="i_m_agree_with_privacy_policy_and_user_agreement">i’m agree with <b>privacy policy</b> <b>and user agreement</b></string>
     <string name="error">Ошибка!</string>
     <string name="error_text">Возникла какая-то ошибка</string>
+    <string name="verify">Verify</string>
+    <string name="code">Code</string>
 </resources>
