@@ -20,10 +20,15 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(binding.root)
         sharedPreferences = getSharedPreferences("welcom", MODE_PRIVATE)
 
+        binding.skip.setOnClickListener {
+            binding.viewPager.currentItem = 3
+        }
+
         with(binding.viewPager) {
             adapter = PageAdapter(supportFragmentManager)
             overScrollMode = View.OVER_SCROLL_NEVER
             currentItem = 0
+            binding.spring.attachTo(this)
 
             val next = resources.getString(R.string.next)
             val finish = resources.getString(R.string.finish)

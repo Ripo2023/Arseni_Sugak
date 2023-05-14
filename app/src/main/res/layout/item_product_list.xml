@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/images"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/fluet" />
+
+    <TextView
+        android:id="@+id/name_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/semi"
+        android:text="Cappuccino"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintStart_toEndOf="@+id/images"
+        app:layout_constraintTop_toTopOf="@+id/images" />
+
+    <TextView
+        android:id="@+id/volume_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/regu"
+        android:text="@string/_200_ml"
+        android:textColor="@color/one_gray"
+        android:textSize="13dp"
+        app:layout_constraintStart_toStartOf="@+id/name_product"
+        app:layout_constraintTop_toBottomOf="@+id/name_product" />
+
+    <TextView
+        android:id="@+id/ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/regu"
+        android:text="+ dfdsfTextView"
+        android:textColor="@color/orange"
+        android:textSize="11dp"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="@+id/volume_product"
+        app:layout_constraintTop_toBottomOf="@+id/volume_product" />
+
+    <TextView
+        android:id="@+id/price_product"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/semi"
+        android:text="135"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/name_product" />
+</androidx.constraintlayout.widget.ConstraintLayout>
