@@ -9,6 +9,7 @@
 
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FF5712</color>
+    <color name="disable_button">#B7B7B7</color>
     <color name="orange_trans">#74FF5712</color>
     <color name="green">#3ABB37</color>
     <color name="blue">#3478F0</color>

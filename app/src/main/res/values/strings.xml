@@ -16,4 +16,8 @@ Now let's tell you how it works</string>
     <string name="Continue">Continue</string>
     <string name="sign">Sign in</string>
     <string name="select">Select</string>
+    <string name="shop">Coffee shop address</string>
+    <string name="i_m_agree_with_privacy_policy_and_user_agreement">i’m agree with <b>privacy policy</b> <b>and user agreement</b></string>
+    <string name="error">Ошибка!</string>
+    <string name="error_text">Возникла какая-то ошибка</string>
 </resources>
