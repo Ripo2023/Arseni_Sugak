@@ -9,9 +9,7 @@ import com.example.myapplication.views.welcoms.ThreeFragment
 import com.example.myapplication.views.welcoms.TwoFragment
 
 class PageAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
-    override fun getCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getCount(): Int = 4
 
     override fun getItem(position: Int): Fragment = when (position) {
         0 -> {
