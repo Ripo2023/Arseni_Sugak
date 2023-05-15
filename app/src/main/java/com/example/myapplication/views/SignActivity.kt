@@ -1,12 +1,15 @@
 package com.example.myapplication.views
 
+import android.app.Notification
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivitySignBinding
 import com.example.myapplication.databinding.ActivityWelcomeBinding
@@ -16,29 +19,46 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.Random
 import java.util.concurrent.TimeUnit
 
 class SignActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignBinding
     private lateinit var auth: FirebaseAuth
+    lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
+        sharedPreferences = getSharedPreferences("welcom", MODE_PRIVATE)
+
         binding.button.isEnabled = false
         binding.button.isClickable = false
 
+        binding.agree.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked && binding.phone.text.isNotBlank()){
+                binding.button.isEnabled = true
+                binding.button.isClickable = true
+                binding.button.backgroundTintList =
+                    ColorStateList.valueOf(resources.getColor(R.color.blue))
+            } else {
+                binding.button.isEnabled = false
+                binding.button.isClickable = false
+                binding.button.backgroundTintList =
+                    ColorStateList.valueOf(resources.getColor(R.color.disable_button))
+            }
+        }
+
         binding.phone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s != "") {
+                if (s != "" && binding.agree.isChecked) {
                     binding.button.isEnabled = true
                     binding.button.isClickable = true
                     binding.button.backgroundTintList =
@@ -51,6 +71,9 @@ class SignActivity : AppCompatActivity() {
                 }
             }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -58,7 +81,9 @@ class SignActivity : AppCompatActivity() {
 
 
         binding.button.setOnClickListener {
-            val options = PhoneAuthOptions.newBuilder(auth)
+
+            //Firebase Auth Phone
+            /*val options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(binding.phone.text.toString().trim())
                 .setTimeout(60L, TimeUnit.SECONDS)
                 .setActivity(this)
@@ -76,13 +101,40 @@ class SignActivity : AppCompatActivity() {
                         verificationId: String,
                         token: PhoneAuthProvider.ForceResendingToken
                     ) {
+                        VerifyActivity.VerificationId = verificationId
                         startActivity(Intent(this@SignActivity, VerifyActivity::class.java))
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                     }
                 })
                 .build()
-            PhoneAuthProvider.verifyPhoneNumber(options)
+            PhoneAuthProvider.verifyPhoneNumber(options)*/
+
+            val database = Firebase.database
+            val uid = VerifyActivity.phone.replace("+", null.toString())
+            val tt = Firebase.database.reference.child("users").orderByChild("uid").equalTo(uid).addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot != null) {
+                        sharedPreferences.edit().putString("auth", "yew").apply()
+                        startActivity(Intent(this@SignActivity, MainActivity::class.java))
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                    } else {
+                        val code = rand(0, 1000)
+                        VerifyActivity.VerificationId = code.toString()
+                        VerifyActivity.phone = binding.phone.text.toString()
+                        startActivity(Intent(this@SignActivity, VerifyActivity::class.java))
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
         }
+    }
+
+    fun rand(start: Int, end: Int): Int {
+        require(!(start > end || end - start + 1 > Int.MAX_VALUE)) { "Illegal Argument" }
+        return Random(System.nanoTime()).nextInt(end - start + 1) + start
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {

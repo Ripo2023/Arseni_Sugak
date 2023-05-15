@@ -7,6 +7,9 @@ import android.os.Handler
 import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class SplachActivity : AppCompatActivity() {
 
@@ -19,8 +22,14 @@ class SplachActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             if (sharedPreferences.getString("welcome", "") != "") {
-                startActivity(Intent(this, MainActivity::class.java))
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                if(sharedPreferences.getString("auth", "") != "") {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                } else
+                {
+                    startActivity(Intent(this, SignActivity::class.java))
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                }
             } else {
                 startActivity(Intent(this, WelcomeActivity::class.java))
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)

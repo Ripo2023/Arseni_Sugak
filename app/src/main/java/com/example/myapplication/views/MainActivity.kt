@@ -4,9 +4,11 @@ import android.app.Notification.Action
 import android.companion.CompanionDeviceManager
 import android.companion.CompanionDeviceService
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -32,6 +34,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var database: FirebaseDatabase
     lateinit var reference: DatabaseReference
+
+    companion object{
+        lateinit var count: TextView
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -39,40 +45,37 @@ class MainActivity : AppCompatActivity() {
 
         database = Firebase.database
         reference = database.reference
+        count = binding.count
 
         var list = mutableListOf<CoffeeModel>()
         var bannerList = mutableListOf<Banner>()
 
-        /*database.getReference("caffe").addChildEventListener(object : ChildEventListener {
+        database.getReference("caffe").addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 getCoffeData(list, snapshot)
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                getCoffeData(list, snapshot)
             }
 
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                getCoffeData(list, snapshot)
-            }
+            override fun onChildRemoved(snapshot: DataSnapshot) {}
 
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                getCoffeData(list, snapshot)
-            }
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {}
 
             override fun onCancelled(error: DatabaseError) {
                 showToastMessage()
             }
 
-        })*/
+        })
 
         binding.constraintLayout.setOnClickListener {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setTitle(getString(R.string.hello_title))
             alertDialog.setMessage(getString(R.string.want_to_view_our_location))
             alertDialog.setPositiveButton(getString(R.string.yes)) { dialog, _ ->
-                /*val uri = String.format(Locale.ENGLISH, "geo:%f,%f",53.88456795766346, 27.5403940306815)
-                val intent = Intent.getIntent(View.ACT)*/
+                val uri = String.format(Locale.ENGLISH, "geo:%f,%f",53.88456795766346, 27.5403940306815)
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
+                startActivity(intent)
             }
             alertDialog.setNegativeButton(getString(R.string.no)) { dialog, _ -> /*alertDialog*/
             }
@@ -103,10 +106,6 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        binding.viewPager2.getChildAt(0).overScrollMode = View.OVER_SCROLL_NEVER
-        val compositePageTransformer = CompositePageTransformer()
-        compositePageTransformer.addTransformer(MarginPageTransformer(40))
-
         binding.user.setOnClickListener {
             startActivity(Intent(this, ProductListActivity::class.java))
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -117,12 +116,17 @@ class MainActivity : AppCompatActivity() {
         bannerList: MutableList<Banner>,
         snapshot: DataSnapshot
     ) {
-        bannerList.clear()
         val banner = snapshot.getValue<Banner>()
         if (banner != null) {
             bannerList.add(Banner(link = banner.link))
         }
         binding.viewPager2.adapter = BannerAdapter(bannerList)
+        binding.viewPager2.clipChildren = false
+        binding.viewPager2.clipToPadding = false
+
+        binding.viewPager2.getChildAt(0).overScrollMode = View.OVER_SCROLL_NEVER
+        /*val compositePageTransformer = CompositePageTransformer()
+        compositePageTransformer.addTransformer(MarginPageTransformer(40))*/
     }
 
     private fun showToastMessage() {
@@ -134,20 +138,31 @@ class MainActivity : AppCompatActivity() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle("Important!")
         alertDialog.setMessage("You have added items to your cart. Are you sure you want to leave?")
+        alertDialog.setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+            finish()
+        }
+        alertDialog.setNegativeButton(getString(R.string.no)) { dialog, _ -> /*alertDialog*/
+        }
+        alertDialog.show()
     }
 
     private fun getCoffeData(
         list: MutableList<CoffeeModel>,
         snapshot: DataSnapshot
     ) {
-        list.clear()
         for (data in snapshot.children) {
-            val dataCaffe: CoffeeModel? = data.getValue<CoffeeModel>()
+            val dataCaffe = snapshot.getValue<CoffeeModel>()
             if (dataCaffe != null) {
-                list.add(dataCaffe)
+                list.add(
+                    CoffeeModel(
+                        name = dataCaffe.name,
+                        price = dataCaffe.price,
+                        coffee = dataCaffe.coffee
+                    )
+                )
             }
         }
-
         binding.recyclerView.adapter = GridListAdapter(list)
+        binding.progress.visibility = View.GONE
     }
 }

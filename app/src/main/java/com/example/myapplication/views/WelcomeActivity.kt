@@ -83,7 +83,7 @@ class WelcomeActivity : AppCompatActivity() {
 
                 3 -> {
                     sharedPreferences.edit().putString("welcome", "yew").apply()
-                    startActivity(Intent(this, MainActivity::class.java))
+                    startActivity(Intent(this, SignActivity::class.java))
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 }
             }

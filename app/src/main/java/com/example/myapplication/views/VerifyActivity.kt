@@ -1,32 +1,70 @@
 package com.example.myapplication.views
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationChannelCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityVerifyBinding
+import com.example.myapplication.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.Random
 
 class VerifyActivity : AppCompatActivity() {
     lateinit var binding: ActivityVerifyBinding
     private lateinit var auth: FirebaseAuth
+    val CHANNEL_ID = "CHANNEL"
+    lateinit var database: FirebaseDatabase
+    lateinit var sharedPreferences: SharedPreferences
 
     companion object{
-        var VerificationId: Int = 1
+        lateinit var VerificationId: String
+        var phone = ""
+        const val NOTIFICATION_ID = 101
+        const val CHANNEL_ID = "channel_name"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVerifyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPreferences = getSharedPreferences("welcom", MODE_PRIVATE)
+
+        database = Firebase.database
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            /*var builder = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("Сообщение")
+                .setContentText("Код приложения: ${VerificationId}")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+            val notificationManagerCompat = NotificationManagerCompat.from(this)
+
+            notificationManagerCompat.notify(NOTIFICATION_ID, builder.build() )*/
+        }, 2000)
 
         auth = FirebaseAuth.getInstance()
 
@@ -34,17 +72,31 @@ class VerifyActivity : AppCompatActivity() {
             finish()
         }
 
+        Toast.makeText(this, "${VerificationId}", Toast.LENGTH_SHORT).show()
+
         binding.button.setOnClickListener {
-            val credential = PhoneAuthProvider.getCredential(VerificationId!!.toString(), binding.phone.text.toString().trim())
-            signInWithPhoneAuthCredential(credential)
+            //Firebase Auth Phone
+            /*val credential = PhoneAuthProvider.getCredential(VerificationId!!.toString(), binding.phone.text.toString().trim())
+            signInWithPhoneAuthCredential(credential)*/
+
+            val text = binding.phone.text.toString().trim()
+            if(text == VerificationId){
+                val uid = phone.replace("+", "")
+                database.reference.child("users").child(uid).setValue(User(
+                    phone = phone,
+                    uid = uid
+                )).addOnCompleteListener{
+                    sharedPreferences.edit().putString("auth", "yew").apply()
+                    startActivity(Intent(this, MainActivity::class.java))
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                }
+            } else{
+                Toast.makeText(this, "Пароли не совподают!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.phone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s != "") {
                     binding.button.isEnabled = true
                     binding.button.isClickable = true
@@ -58,10 +110,17 @@ class VerifyActivity : AppCompatActivity() {
                 }
             }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
             override fun afterTextChanged(s: Editable?) {
             }
 
         })
+    }
+    fun rand(start: Int, end: Int): Int {
+        require(!(start > end || end - start + 1 > Int.MAX_VALUE)) { "Illegal Argument" }
+        return Random(System.nanoTime()).nextInt(end - start + 1) + start
     }
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {

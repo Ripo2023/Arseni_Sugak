@@ -1,6 +1,7 @@
 package com.example.myapplication.views
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -28,18 +29,18 @@ class ProductListActivity : AppCompatActivity() {
     lateinit var database: FirebaseDatabase
     lateinit var auth: FirebaseAuth
     lateinit var reference: DatabaseReference
+    lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        sharedPreferences = getSharedPreferences("welcom", MODE_PRIVATE)
 
         database = Firebase.database
-        auth = Firebase.auth
-        reference.database.reference
 
         var list = mutableListOf<ProductListModel>()
 
-        database.getReference("product_list/${auth.currentUser?.uid}").addChildEventListener(object : ChildEventListener {
+        database.getReference("product_list/${sharedPreferences.getString("auth", "")}").addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 getProductListData(list, snapshot)
             }
