@@ -10,8 +10,10 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.models.ProductListModel
 import com.example.myapplication.views.SelectIngredientActivity
@@ -29,6 +31,7 @@ class ProductListAdapter(
         val delete: ImageView = itemView.findViewById(R.id.delete)
         val edit: ImageView = itemView.findViewById(R.id.edit)
         val ingredient: TextView = itemView.findViewById(R.id.ingredient)
+        val count: TextView = itemView.findViewById(R.id.count)
     }
 
 
@@ -40,10 +43,29 @@ class ProductListAdapter(
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val koof  = when (list[position].volume){
+            "200 ml" -> {
+                1
+            }
+            "300 ml" -> {
+                1.5
+            }
+            "400 ml" -> {
+                2
+            }
+
+            else -> {1}
+        }
+        val price = list[position].price!!.toDouble() * list[position].count!!.toDouble() * koof.toDouble()
         holder.name.text = list[position].name
-        holder.price.text = list[position].price
+        holder.price.text = "from $price ₽"
         holder.volume.text = list[position].volume
         holder.ingredient.text = list[position].ingredient
+        holder.count.text = list[position].count
+
+        Glide.with(holder.itemView.context)
+            .load(list[position].coffe)
+            .into(holder.image)
 
         sharedPreferences =
             holder.itemView.context.getSharedPreferences("welcom", AppCompatActivity.MODE_PRIVATE)
@@ -65,7 +87,9 @@ class ProductListAdapter(
         }
 
         holder.edit.setOnClickListener {
-            //INTENT
+            SelectIngredientActivity.name = list[position].type.toString()
+            SelectIngredientActivity.naming = list[position].name.toString()
+            holder.itemView.context.startActivity(Intent(holder.itemView.context, SelectIngredientActivity::class.java))
         }
     }
 }

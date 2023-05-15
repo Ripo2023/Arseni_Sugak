@@ -6,5 +6,6 @@ data class ProductListModel(
     var volume: String? = null,
     var ingredient: String? = null,
     var coffe: String? = null,
-    var count: String? = null
+    var count: String? = null,
+    var type: String? = null
 )

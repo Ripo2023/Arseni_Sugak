@@ -53,7 +53,7 @@ class GridListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.name.text = list[position].name
-        holder.price.text = list[position].price
+        holder.price.text = "from ${list[position].price} ₽"
 
         sharedPreferences =
             holder.itemView.context.getSharedPreferences("welcom", AppCompatActivity.MODE_PRIVATE)
@@ -119,7 +119,7 @@ class GridListAdapter(
             list[position].check = list[position].check != true
 
             holder.glav.strokeColor = holder.itemView.context.getColor(R.color.orange)
-            holder.glav.strokeWidth = 4
+            holder.glav.strokeWidth = 6
 
             MainActivity.count.text = (MainActivity.count.text.toString().toInt() + 1).toString()
             holder.count.text = "1"
@@ -138,8 +138,10 @@ class GridListAdapter(
                     ingredient = "null",
                     count = "1",
                     coffe = list[position].coffee,
+                    type = list[position].type
                 )
             )
+
         }
     }
 }

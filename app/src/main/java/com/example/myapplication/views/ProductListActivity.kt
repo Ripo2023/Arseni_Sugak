@@ -41,6 +41,8 @@ class ProductListActivity : AppCompatActivity() {
 
         var list = mutableListOf<ProductListModel>()
 
+        var price = 0.0
+
         database.getReference("product_list/${sharedPreferences.getString("auth", "")}").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 list.clear()
@@ -48,9 +50,12 @@ class ProductListActivity : AppCompatActivity() {
                     val dataProduct: ProductListModel? = postSnapshot.getValue<ProductListModel>()
                     if (dataProduct != null) {
                         list.add(dataProduct)
+                        price += dataProduct.price!!.toDouble()
                     }
                     binding.recyclerView.adapter = ProductListAdapter(list)
                 }
+
+                binding.price.text = "Full Price: $price ₽"
 
                 if(list.size == 0){
                     binding.recyclerView.visibility = View.GONE
@@ -62,6 +67,11 @@ class ProductListActivity : AppCompatActivity() {
             override fun onCancelled(databaseError: DatabaseError) {
             }
         })
+
+        binding.button.setOnClickListener {
+            QrCodeActivity.data = list.toString()
+            startActivity(Intent(this, QrCodeActivity::class.java))
+        }
 
         binding.back.setOnClickListener {
             finish()

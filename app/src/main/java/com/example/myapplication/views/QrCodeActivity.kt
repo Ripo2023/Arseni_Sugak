@@ -13,12 +13,15 @@ import com.journeyapps.barcodescanner.BarcodeEncoder
 class QrCodeActivity : AppCompatActivity() {
     lateinit var binding: ActivityQrCodeBinding
 
+    companion object{
+        lateinit var data: String
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityQrCodeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        createQrCode("dhfd")
+        createQrCode(data)
 
         binding.back.setOnClickListener {
             finish()

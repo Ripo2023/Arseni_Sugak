@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/images"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/fluet"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -60,6 +60,19 @@
             android:textSize="16dp"
             app:layout_constraintStart_toEndOf="@+id/images"
             app:layout_constraintTop_toTopOf="@+id/images" />
+
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/regu"
+            android:layout_marginStart="10dp"
+            android:text="x1"
+            android:textColor="@color/orange"
+            android:textSize="15dp"
+            app:layout_constraintBottom_toBottomOf="@+id/name_product"
+            app:layout_constraintStart_toEndOf="@+id/name_product"
+            app:layout_constraintTop_toTopOf="@+id/name_product" />
 
         <TextView
             android:id="@+id/volume_product"
