@@ -70,6 +70,8 @@ class ProductListAdapter(
         sharedPreferences =
             holder.itemView.context.getSharedPreferences("welcom", AppCompatActivity.MODE_PRIVATE)
 
+
+        //delete items
         holder.delete.setOnClickListener {
             var alertDialog = AlertDialog.Builder(holder.itemView.context)
             alertDialog.setTitle(holder.itemView.context.getString(R.string.hello_title))
@@ -86,6 +88,7 @@ class ProductListAdapter(
             alertDialog.show()
         }
 
+        //edit items
         holder.edit.setOnClickListener {
             SelectIngredientActivity.name = list[position].type.toString()
             SelectIngredientActivity.naming = list[position].name.toString()

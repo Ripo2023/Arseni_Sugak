@@ -56,6 +56,8 @@ class SignActivity : AppCompatActivity() {
             }
         }
 
+
+        //listner for textview
         binding.phone.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 if (s != "" && binding.agree.isChecked) {
@@ -127,6 +129,7 @@ class SignActivity : AppCompatActivity() {
                 }
             })*/
 
+            //create verify code for reg
             val code = rand(0, 1000)
             VerifyActivity.VerificationId = code.toString()
             VerifyActivity.phone = binding.phone.text.toString()

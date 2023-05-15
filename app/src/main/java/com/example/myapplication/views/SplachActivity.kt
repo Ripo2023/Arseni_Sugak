@@ -20,6 +20,7 @@ class SplachActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splach)
         sharedPreferences = getSharedPreferences("welcom", MODE_PRIVATE)
 
+        //here user can open manual users and sign to account
         Handler(Looper.getMainLooper()).postDelayed({
             if (sharedPreferences.getString("welcome", "") != "") {
                 if(sharedPreferences.getString("auth", "") != "") {

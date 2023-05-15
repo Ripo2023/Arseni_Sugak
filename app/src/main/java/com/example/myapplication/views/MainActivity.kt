@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
 
         })*/
 
-        // My top posts by number of stars
+        //get list caffe from database
         database.getReference("caffe").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 list.clear()
@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        //open map application
         binding.constraintLayout.setOnClickListener {
             val alertDialog = AlertDialog.Builder(this)
             alertDialog.setTitle(getString(R.string.hello_title))
@@ -116,6 +117,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+        //init database banner
         database.getReference("banner").addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 bannerData(bannerList, snapshot)
@@ -169,6 +171,7 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this@MainActivity, R.string.error_text, Toast.LENGTH_SHORT).show()
     }
 
+    //delete all list cart
     override fun onBackPressed() {
         val alertDialog = AlertDialog.Builder(this)
         alertDialog.setTitle("Important!")

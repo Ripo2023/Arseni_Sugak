@@ -46,6 +46,7 @@ class SelectIngredientActivity : AppCompatActivity() {
 
         val database = Firebase.database
 
+        //get list ingridients
         val uid = sharedPreferences.getString("auth", "").toString()
         database.getReference("product_list/$uid/${naming}")
             .addValueEventListener(object : ValueEventListener {
@@ -68,7 +69,7 @@ class SelectIngredientActivity : AppCompatActivity() {
                 override fun onCancelled(databaseError: DatabaseError) {
                 }
             })
-
+        //get list data about coffee
         database.getReference("about_coffee/${naming.lowercase()}")
             .addListenerForSingleValueEvent(object : ValueEventListener {
 
@@ -87,6 +88,7 @@ class SelectIngredientActivity : AppCompatActivity() {
                 override fun onCancelled(error: DatabaseError) {}
             })
 
+        //change ml to coffee
         binding.oneB.setOnClickListener {
             val uid = sharedPreferences.getString("auth", "").toString()
             database.reference.child("product_list")
@@ -144,6 +146,7 @@ class SelectIngredientActivity : AppCompatActivity() {
         }
     }
 
+    //change color buttons
     private fun changeElementFavorite(it: TextView) {
         it.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.black))
         it.setTextColor(resources.getColor(R.color.white))

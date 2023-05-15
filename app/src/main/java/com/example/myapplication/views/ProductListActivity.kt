@@ -43,6 +43,7 @@ class ProductListActivity : AppCompatActivity() {
 
         var price = 0.0
 
+        //get list personal product from database
         database.getReference("product_list/${sharedPreferences.getString("auth", "")}").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 list.clear()
@@ -68,6 +69,7 @@ class ProductListActivity : AppCompatActivity() {
             }
         })
 
+        //open qr code reader
         binding.button.setOnClickListener {
             QrCodeActivity.data = list.toString()
             startActivity(Intent(this, QrCodeActivity::class.java))

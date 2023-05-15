@@ -28,6 +28,7 @@ class QrCodeActivity : AppCompatActivity() {
         }
     }
 
+    //function to convert text to qr
     private fun createQrCode(data: String) {
         val barcodeEncoder = BarcodeEncoder()
         val bitmap: Bitmap = barcodeEncoder.encodeBitmap(data, BarcodeFormat.QR_CODE, 512, 512)
