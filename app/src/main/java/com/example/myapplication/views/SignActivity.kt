@@ -28,7 +28,7 @@ class SignActivity : AppCompatActivity() {
         binding = ActivitySignBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
         binding.button.isEnabled = false
         binding.button.isClickable = false
 
@@ -56,33 +56,30 @@ class SignActivity : AppCompatActivity() {
 
         })
 
-        val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                signInWithPhoneAuthCredential(credential)
-            }
-
-            override fun onVerificationFailed(p0: FirebaseException) {
-                Toast.makeText(this@SignActivity, R.string.error_text, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onCodeSent(
-                verificationId: String,
-                token: PhoneAuthProvider.ForceResendingToken
-            ) {
-                VerifyActivity.storedVerificationId = verificationId
-                VerifyActivity.resendToken = token
-
-                startActivity(Intent(this@SignActivity, VerifyActivity::class.java))
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-            }
-        }
 
         binding.button.setOnClickListener {
             val options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(binding.phone.text.toString().trim())
                 .setTimeout(60L, TimeUnit.SECONDS)
                 .setActivity(this)
-                .setCallbacks(callbacks)
+                .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                        signInWithPhoneAuthCredential(credential)
+                    }
+
+                    override fun onVerificationFailed(p0: FirebaseException) {
+                        Toast.makeText(this@SignActivity, R.string.error_text, Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    override fun onCodeSent(
+                        verificationId: String,
+                        token: PhoneAuthProvider.ForceResendingToken
+                    ) {
+                        startActivity(Intent(this@SignActivity, VerifyActivity::class.java))
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+                    }
+                })
                 .build()
             PhoneAuthProvider.verifyPhoneNumber(options)
         }

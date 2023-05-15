@@ -18,7 +18,7 @@ class SplachActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("welcom", MODE_PRIVATE)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            if (sharedPreferences.getString("welcome", "") != null) {
+            if (sharedPreferences.getString("welcome", "") != "") {
                 startActivity(Intent(this, MainActivity::class.java))
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             } else {

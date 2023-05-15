@@ -20,8 +20,7 @@ class VerifyActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
     companion object{
-        var storedVerificationId: String? = null
-        var resendToken: PhoneAuthProvider.ForceResendingToken? = null
+        var VerificationId: Int = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,15 +28,14 @@ class VerifyActivity : AppCompatActivity() {
         binding = ActivityVerifyBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
 
         binding.back.setOnClickListener {
             finish()
         }
 
         binding.button.setOnClickListener {
-            val credential = PhoneAuthProvider.getCredential(storedVerificationId!!, binding.phone.text.toString().trim())
-
+            val credential = PhoneAuthProvider.getCredential(VerificationId!!.toString(), binding.phone.text.toString().trim())
             signInWithPhoneAuthCredential(credential)
         }
 
