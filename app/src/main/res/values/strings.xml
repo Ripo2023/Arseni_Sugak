@@ -39,4 +39,7 @@
     <string name="want_to_view_our_location">Want to view our location?</string>
     <string name="yes">Yes\n</string>
     <string name="no">No</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
 </resources>

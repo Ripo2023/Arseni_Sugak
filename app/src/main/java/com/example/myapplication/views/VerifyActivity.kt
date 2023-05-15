@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +17,7 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationCompat
@@ -30,6 +32,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.Locale
 import java.util.Random
 
 class VerifyActivity : AppCompatActivity() {
@@ -42,8 +45,6 @@ class VerifyActivity : AppCompatActivity() {
     companion object{
         lateinit var VerificationId: String
         var phone = ""
-        const val NOTIFICATION_ID = 101
-        const val CHANNEL_ID = "channel_name"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,15 +56,10 @@ class VerifyActivity : AppCompatActivity() {
         database = Firebase.database
 
         Handler(Looper.getMainLooper()).postDelayed({
-            /*var builder = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("Сообщение")
-                .setContentText("Код приложения: ${VerificationId}")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-            val notificationManagerCompat = NotificationManagerCompat.from(this)
-
-            notificationManagerCompat.notify(NOTIFICATION_ID, builder.build() )*/
+            val alertDialog = AlertDialog.Builder(this)
+            alertDialog.setTitle("Сообщение")
+            alertDialog.setMessage("Код приложения: ${VerificationId}")
+            alertDialog.show()
         }, 2000)
 
         auth = FirebaseAuth.getInstance()
@@ -71,8 +67,6 @@ class VerifyActivity : AppCompatActivity() {
         binding.back.setOnClickListener {
             finish()
         }
-
-        Toast.makeText(this, "${VerificationId}", Toast.LENGTH_SHORT).show()
 
         binding.button.setOnClickListener {
             //Firebase Auth Phone
@@ -86,7 +80,8 @@ class VerifyActivity : AppCompatActivity() {
                     phone = phone,
                     uid = uid
                 )).addOnCompleteListener{
-                    sharedPreferences.edit().putString("auth", "yew").apply()
+                    sharedPreferences.edit().putString("auth", uid).apply()
+                    MainActivity.uid = uid
                     startActivity(Intent(this, MainActivity::class.java))
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                 }

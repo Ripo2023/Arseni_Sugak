@@ -42,7 +42,6 @@ class GridListAdapter(
         val pl: LinearLayout = itemView.findViewById(R.id.pl_mn)
     }
 
-
     lateinit var database: FirebaseDatabase
     lateinit var sharedPreferences: SharedPreferences
 
@@ -57,7 +56,7 @@ class GridListAdapter(
         holder.price.text = list[position].price
 
         sharedPreferences =
-            holder.itemView.context.getSharedPreferences("auth", AppCompatActivity.MODE_PRIVATE)
+            holder.itemView.context.getSharedPreferences("welcom", AppCompatActivity.MODE_PRIVATE)
 
         Glide.with(holder.itemView.context)
             .load(list[position].coffee)
@@ -68,14 +67,26 @@ class GridListAdapter(
             count = count!! + 1
             list[position].count = count.toString()
             holder.count.text = count.toString()
+            val uid = sharedPreferences.getString("auth", "").toString()
+            database.reference.child("product_list")
+                .child(uid).child(
+                    list[position].name.toString()
+                ).child("count").setValue(count.toString())
+
             MainActivity.count.text = (MainActivity.count.text.toString().toInt() + 1).toString()
         }
         holder.minus.setOnClickListener {
             var count = list[position].count?.toInt()
-            if (count != 1) {
+            if (count!! > 1) {
                 count = count!! - 1
                 list[position].count = count.toString()
                 holder.count.text = count.toString()
+                val uid = sharedPreferences.getString("auth", "").toString()
+                database.reference.child("product_list")
+                    .child(uid).child(
+                        list[position].name.toString()
+                    ).child("count").setValue(count.toString())
+
                 MainActivity.count.text =
                     (MainActivity.count.text.toString().toInt() - 1).toString()
             }
@@ -92,28 +103,32 @@ class GridListAdapter(
                 holder.count.text = "1"
                 MainActivity.count.text = (MainActivity.count.text.toString()
                     .toInt() - (list[position].count)!!.toInt()).toString()
-                if (MainActivity.count.text == "1") {
-                    MainActivity.count.visibility = View.GONE
-                }
+
+                val uid = sharedPreferences.getString("auth", "").toString()
+                database.reference.child("product_list")
+                    .child(uid).child(
+                        list[position].name.toString()
+                    ).removeValue()
             }
         }
 
         holder.button.setOnClickListener {
-            /*holder.button.visibility = View.GONE
+            holder.button.visibility = View.GONE
             holder.pl.visibility = View.VISIBLE
-            MainActivity.count.visibility = View.VISIBLE
-            MainActivity.count.visibility = View.VISIBLE
+
             list[position].check = list[position].check != true
+
             holder.glav.strokeColor = holder.itemView.context.getColor(R.color.orange)
             holder.glav.strokeWidth = 4
-            Toast.makeText(holder.itemView.context, list[position].espanol, Toast.LENGTH_SHORT).show()
+
             MainActivity.count.text = (MainActivity.count.text.toString().toInt() + 1).toString()
             holder.count.text = "1"
-*/
             database = Firebase.database
 
+            val uid = sharedPreferences.getString("auth", "").toString()
+
             database.reference.child("product_list")
-                .child(sharedPreferences.getString("auth", "").toString()).child(
+                .child(uid).child(
                 list[position].name.toString()
             ).setValue(
                 ProductListModel(
@@ -121,17 +136,10 @@ class GridListAdapter(
                     price = list[position].price,
                     volume = "200 ml",
                     ingredient = "null",
+                    count = "1",
                     coffe = list[position].coffee,
                 )
             )
-
-            holder.itemView.context.startActivity(
-                Intent(
-                    holder.itemView.context,
-                    SelectIngredientActivity::class.java
-                )
-            )
-            SelectIngredientActivity.name = list[position].type.toString()
         }
     }
 }

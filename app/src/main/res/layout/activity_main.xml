@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/medium"
         android:text="0"
-        android:visibility="gone"
+        android:visibility="visible"
         android:textColor="@color/one_gray"
         android:textSize="13sp"
         android:translationX="-8dp"

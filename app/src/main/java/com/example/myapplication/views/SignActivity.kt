@@ -111,24 +111,27 @@ class SignActivity : AppCompatActivity() {
 
             val database = Firebase.database
             val uid = VerifyActivity.phone.replace("+", null.toString())
-            val tt = Firebase.database.reference.child("users").orderByChild("uid").equalTo(uid).addValueEventListener(object: ValueEventListener {
+            /*val tt = Firebase.database.reference.child("users").orderByChild("uid").equalTo(uid).addValueEventListener(object: ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children
                     if (snapshot != null) {
                         sharedPreferences.edit().putString("auth", "yew").apply()
                         startActivity(Intent(this@SignActivity, MainActivity::class.java))
                         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
                     } else {
-                        val code = rand(0, 1000)
-                        VerifyActivity.VerificationId = code.toString()
-                        VerifyActivity.phone = binding.phone.text.toString()
-                        startActivity(Intent(this@SignActivity, VerifyActivity::class.java))
-                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                 }
-            })
+            })*/
+
+            val code = rand(0, 1000)
+            VerifyActivity.VerificationId = code.toString()
+            VerifyActivity.phone = binding.phone.text.toString()
+            startActivity(Intent(this@SignActivity, VerifyActivity::class.java))
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
         }
     }
 

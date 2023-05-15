@@ -20,6 +20,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -40,49 +41,31 @@ class ProductListActivity : AppCompatActivity() {
 
         var list = mutableListOf<ProductListModel>()
 
-        database.getReference("product_list/${sharedPreferences.getString("auth", "")}").addChildEventListener(object : ChildEventListener {
-            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                getProductListData(list, snapshot)
+        database.getReference("product_list/${sharedPreferences.getString("auth", "")}").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                list.clear()
+                for (postSnapshot in dataSnapshot.children) {
+                    val dataProduct: ProductListModel? = postSnapshot.getValue<ProductListModel>()
+                    if (dataProduct != null) {
+                        list.add(dataProduct)
+                    }
+                    binding.recyclerView.adapter = ProductListAdapter(list)
+                }
+
+                if(list.size == 0){
+                    binding.recyclerView.visibility = View.GONE
+                    binding.button.visibility = View.GONE
+                    binding.empty.visibility = View.VISIBLE
+                }
             }
 
-            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                getProductListData(list, snapshot)
+            override fun onCancelled(databaseError: DatabaseError) {
             }
-
-            override fun onChildRemoved(snapshot: DataSnapshot) {
-                getProductListData(list, snapshot)
-            }
-
-            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                getProductListData(list, snapshot)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                showToastMessage()
-            }
-
         })
 
         binding.back.setOnClickListener {
             finish()
         }
-    }
-
-    private fun getProductListData(list: MutableList<ProductListModel>, snapshot: DataSnapshot) {
-        list.clear()
-        for (data in snapshot.children) {
-            val dataProduct: ProductListModel? = data.getValue<ProductListModel>()
-            if (dataProduct != null) {
-                list.add(dataProduct)
-            }
-        }
-        if(list.isEmpty()){
-            binding.recyclerView.visibility = View.GONE
-            binding.button.visibility = View.GONE
-            binding.empty.visibility = View.VISIBLE
-        }
-
-        binding.recyclerView.adapter = ProductListAdapter(list)
     }
 
     private fun showToastMessage() {
