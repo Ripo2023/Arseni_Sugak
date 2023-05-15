@@ -190,6 +190,7 @@ of warmed foamed milk"
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:id="@+id/components"
         android:clipToPadding="false"
         android:orientation="horizontal"
         android:paddingStart="20dp"

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myapplication.R
 import com.example.myapplication.models.Banner
 
@@ -25,6 +26,7 @@ class BannerAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Glide.with(holder.itemView.context)
             .load(list[position].link)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.image)
     }
 }

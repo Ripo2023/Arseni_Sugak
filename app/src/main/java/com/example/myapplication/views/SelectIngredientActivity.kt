@@ -10,9 +10,11 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.adapters.GridListAdapter
+import com.example.myapplication.adapters.IngredientAdapter
 import com.example.myapplication.databinding.ActivitySelectIngredientBinding
 import com.example.myapplication.models.AboutCoffee
 import com.example.myapplication.models.CoffeeModel
+import com.example.myapplication.models.IngredientModel
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -69,6 +71,30 @@ class SelectIngredientActivity : AppCompatActivity() {
                 override fun onCancelled(databaseError: DatabaseError) {
                 }
             })
+
+        var list = mutableListOf<IngredientModel>()
+
+        database.getReference("ingradient/${naming.lowercase()}").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                list.clear()
+                for (postSnapshot in dataSnapshot.children) {
+                    val dataCaffe = postSnapshot.getValue<IngredientModel>()
+                    if (dataCaffe != null) {
+                        list.add(
+                            IngredientModel(
+                                name = dataCaffe.name,
+                                coffe = dataCaffe.coffe
+                            )
+                        )
+                    }
+                    binding.components.adapter = IngredientAdapter(list)
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+            }
+        })
+
         //get list data about coffee
         database.getReference("about_coffee/${naming.lowercase()}")
             .addListenerForSingleValueEvent(object : ValueEventListener {

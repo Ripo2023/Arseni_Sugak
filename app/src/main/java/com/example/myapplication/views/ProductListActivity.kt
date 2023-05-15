@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.startActivity
 import com.example.myapplication.R
 import com.example.myapplication.adapters.GridListAdapter
@@ -62,6 +63,7 @@ class ProductListActivity : AppCompatActivity() {
                     binding.recyclerView.visibility = View.GONE
                     binding.button.visibility = View.GONE
                     binding.empty.visibility = View.VISIBLE
+                    binding.delete.visibility = View.GONE
                 }
             }
 
@@ -73,6 +75,20 @@ class ProductListActivity : AppCompatActivity() {
         binding.button.setOnClickListener {
             QrCodeActivity.data = list.toString()
             startActivity(Intent(this, QrCodeActivity::class.java))
+        }
+
+        binding.delete.setOnClickListener {
+            val alertDialog = AlertDialog.Builder(this)
+            alertDialog.setTitle("Important!")
+            alertDialog.setMessage("You definitely want to delete the list?")
+            alertDialog.setPositiveButton(getString(R.string.yes)) { dialog, _ ->
+                val uid = sharedPreferences.getString("auth", "").toString()
+                database.reference.child("product_list")
+                    .child(uid).removeValue()
+            }
+            alertDialog.setNegativeButton(getString(R.string.no)) { dialog, _ -> /*alertDialog*/
+            }
+            alertDialog.show()
         }
 
         binding.back.setOnClickListener {

@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myapplication.R
 import com.example.myapplication.models.CoffeeModel
 import com.example.myapplication.models.ProductListModel
@@ -60,6 +61,7 @@ class GridListAdapter(
 
         Glide.with(holder.itemView.context)
             .load(list[position].coffee)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.image)
 
         holder.plus.setOnClickListener {

@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myapplication.R
 import com.example.myapplication.models.IngredientModel
 
@@ -24,6 +26,11 @@ class IngredientAdapter(
     override fun getItemCount(): Int = list.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        //if(list[position].coffe == "")
+        holder.name.text = list[position].name
+
+        Glide.with(holder.itemView.context)
+            .load(list[position].coffe)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(holder.image)
     }
 }

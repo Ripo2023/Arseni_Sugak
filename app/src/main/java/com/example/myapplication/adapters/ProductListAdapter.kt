@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.myapplication.R
 import com.example.myapplication.models.ProductListModel
 import com.example.myapplication.views.SelectIngredientActivity
@@ -65,6 +66,7 @@ class ProductListAdapter(
 
         Glide.with(holder.itemView.context)
             .load(list[position].coffe)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.image)
 
         sharedPreferences =
